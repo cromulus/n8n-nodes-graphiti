@@ -31,34 +31,46 @@ class Graphiti {
                     noDataExpression: true,
                     options: [
                         {
+                            name: 'Add Entity Node',
+                            value: 'addEntityNode',
+                            description: 'Add an individual entity node to the knowledge graph',
+                            action: 'Add entity node to graphiti',
+                        },
+                        {
                             name: 'Add Episode',
                             value: 'addEpisode',
                             description: 'Creates a new "episode" in your Graphiti knowledge graph. An episode represents a unit of knowledge, like a document, a conversation, or a structured record.',
-                            action: 'Add a new episode to Graphiti',
+                            action: 'Add a new episode to graphiti',
                         },
                         {
                             name: 'Add Messages',
                             value: 'addMessages',
                             description: 'Add conversation messages to a specific group in the knowledge graph',
-                            action: 'Add messages to Graphiti',
+                            action: 'Add messages to graphiti',
+                        },
+                        {
+                            name: 'Get Entity Edge',
+                            value: 'getEntityEdge',
+                            description: 'Retrieve details of a specific entity edge by UUID',
+                            action: 'Get entity edge from graphiti',
                         },
                         {
                             name: 'Get Episodes',
                             value: 'getEpisodes',
                             description: 'Retrieve episodes for a specific group from the knowledge graph',
-                            action: 'Get episodes from Graphiti',
+                            action: 'Get episodes from graphiti',
                         },
                         {
                             name: 'Get Memory',
                             value: 'getMemory',
                             description: 'Retrieve relevant memories based on context and messages from the knowledge graph',
-                            action: 'Get memory from Graphiti',
+                            action: 'Get memory from graphiti',
                         },
                         {
                             name: 'Search Episodes',
                             value: 'searchEpisodes',
                             description: 'Performs a semantic search over the episodes in your Graphiti knowledge graph. You can search for relationships (edges) or concepts (nodes).',
-                            action: 'Search episodes in Graphiti',
+                            action: 'Search episodes in graphiti',
                         },
                     ],
                     default: 'addEpisode',
@@ -178,8 +190,11 @@ class Graphiti {
                     displayName: 'Limit',
                     name: 'limit',
                     type: 'number',
-                    default: 5,
-                    description: 'For "Node" searches, this specifies the maximum number of nodes to return.',
+                    typeOptions: {
+                        minValue: 1,
+                    },
+                    default: 50,
+                    description: 'Max number of results to return',
                     displayOptions: {
                         show: {
                             operation: ['searchEpisodes'],
@@ -421,6 +436,70 @@ class Graphiti {
                         },
                     ],
                 },
+                {
+                    displayName: 'UUID',
+                    name: 'uuid',
+                    type: 'string',
+                    default: '',
+                    description: 'The UUID of the entity node to add',
+                    required: true,
+                    displayOptions: {
+                        show: {
+                            operation: ['addEntityNode'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'Group ID',
+                    name: 'groupId',
+                    type: 'string',
+                    default: '',
+                    description: 'The group ID for the entity node',
+                    required: true,
+                    displayOptions: {
+                        show: {
+                            operation: ['addEntityNode'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'Name',
+                    name: 'name',
+                    type: 'string',
+                    default: '',
+                    description: 'The name of the entity node',
+                    required: true,
+                    displayOptions: {
+                        show: {
+                            operation: ['addEntityNode'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'Summary',
+                    name: 'summary',
+                    type: 'string',
+                    default: '',
+                    description: 'Optional summary of the entity node',
+                    displayOptions: {
+                        show: {
+                            operation: ['addEntityNode'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'UUID',
+                    name: 'uuid',
+                    type: 'string',
+                    default: '',
+                    description: 'The UUID of the entity edge to retrieve',
+                    required: true,
+                    displayOptions: {
+                        show: {
+                            operation: ['getEntityEdge'],
+                        },
+                    },
+                },
             ],
         };
     }
@@ -479,6 +558,23 @@ class Graphiti {
                         last_n: this.getNodeParameter('lastN', i),
                     };
                     const response = await (0, GenericFunctions_1.getEpisodes)(this, params);
+                    returnData.push({ json: response });
+                }
+                else if (operation === 'addEntityNode') {
+                    const params = {
+                        uuid: this.getNodeParameter('uuid', i),
+                        group_id: this.getNodeParameter('groupId', i),
+                        name: this.getNodeParameter('name', i),
+                        summary: this.getNodeParameter('summary', i, ''),
+                    };
+                    const response = await (0, GenericFunctions_1.addEntityNode)(this, params);
+                    returnData.push({ json: response });
+                }
+                else if (operation === 'getEntityEdge') {
+                    const params = {
+                        uuid: this.getNodeParameter('uuid', i),
+                    };
+                    const response = await (0, GenericFunctions_1.getEntityEdge)(this, params);
                     returnData.push({ json: response });
                 }
             }

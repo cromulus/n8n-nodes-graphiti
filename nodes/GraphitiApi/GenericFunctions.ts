@@ -42,6 +42,17 @@ interface GetEpisodesParams {
     last_n: number;
 }
 
+interface AddEntityNodeParams {
+    uuid: string;
+    group_id: string;
+    name: string;
+    summary?: string;
+}
+
+interface GetEntityEdgeParams {
+    uuid: string;
+}
+
 export async function addEpisode(context: IExecuteFunctions, params: AddEpisodeParams): Promise<any> {
     const credentials = await context.getCredentials('graphitiApi') as { baseUrl: string };
     return context.helpers.httpRequest({
@@ -106,6 +117,30 @@ export async function getEpisodes(context: IExecuteFunctions, params: GetEpisode
     return context.helpers.httpRequest({
         method: 'GET',
         url: `${credentials.baseUrl}/episodes/${params.group_id}?last_n=${params.last_n}`,
+        json: true,
+    });
+}
+
+export async function addEntityNode(context: IExecuteFunctions, params: AddEntityNodeParams): Promise<any> {
+    const credentials = await context.getCredentials('graphitiApi') as { baseUrl: string };
+    return context.helpers.httpRequest({
+        method: 'POST',
+        url: `${credentials.baseUrl}/entity-node`,
+        body: {
+            uuid: params.uuid,
+            group_id: params.group_id,
+            name: params.name,
+            summary: params.summary || '',
+        },
+        json: true,
+    });
+}
+
+export async function getEntityEdge(context: IExecuteFunctions, params: GetEntityEdgeParams): Promise<any> {
+    const credentials = await context.getCredentials('graphitiApi') as { baseUrl: string };
+    return context.helpers.httpRequest({
+        method: 'GET',
+        url: `${credentials.baseUrl}/entity-edge/${params.uuid}`,
         json: true,
     });
 }

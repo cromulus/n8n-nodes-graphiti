@@ -1,7 +1,7 @@
 import {
     ICredentialTestRequest,
     ICredentialType,
-    NodePropertyTypes,
+    INodeProperties,
 } from 'n8n-workflow';
 
 export class GraphitiApi implements ICredentialType {

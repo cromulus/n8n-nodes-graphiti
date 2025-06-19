@@ -5,6 +5,8 @@ exports.searchEpisodes = searchEpisodes;
 exports.addMessages = addMessages;
 exports.getMemory = getMemory;
 exports.getEpisodes = getEpisodes;
+exports.addEntityNode = addEntityNode;
+exports.getEntityEdge = getEntityEdge;
 async function addEpisode(context, params) {
     const credentials = await context.getCredentials('graphitiApi');
     return context.helpers.httpRequest({
@@ -65,6 +67,28 @@ async function getEpisodes(context, params) {
     return context.helpers.httpRequest({
         method: 'GET',
         url: `${credentials.baseUrl}/episodes/${params.group_id}?last_n=${params.last_n}`,
+        json: true,
+    });
+}
+async function addEntityNode(context, params) {
+    const credentials = await context.getCredentials('graphitiApi');
+    return context.helpers.httpRequest({
+        method: 'POST',
+        url: `${credentials.baseUrl}/entity-node`,
+        body: {
+            uuid: params.uuid,
+            group_id: params.group_id,
+            name: params.name,
+            summary: params.summary || '',
+        },
+        json: true,
+    });
+}
+async function getEntityEdge(context, params) {
+    const credentials = await context.getCredentials('graphitiApi');
+    return context.helpers.httpRequest({
+        method: 'GET',
+        url: `${credentials.baseUrl}/entity-edge/${params.uuid}`,
         json: true,
     });
 }

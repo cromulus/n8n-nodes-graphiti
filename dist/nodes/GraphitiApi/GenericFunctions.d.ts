@@ -35,9 +35,20 @@ interface GetEpisodesParams {
     group_id: string;
     last_n: number;
 }
+interface AddEntityNodeParams {
+    uuid: string;
+    group_id: string;
+    name: string;
+    summary?: string;
+}
+interface GetEntityEdgeParams {
+    uuid: string;
+}
 export declare function addEpisode(context: IExecuteFunctions, params: AddEpisodeParams): Promise<any>;
 export declare function searchEpisodes(context: IExecuteFunctions, params: SearchEpisodesParams): Promise<any>;
 export declare function addMessages(context: IExecuteFunctions, params: AddMessagesParams): Promise<any>;
 export declare function getMemory(context: IExecuteFunctions, params: GetMemoryParams): Promise<any>;
 export declare function getEpisodes(context: IExecuteFunctions, params: GetEpisodesParams): Promise<any>;
+export declare function addEntityNode(context: IExecuteFunctions, params: AddEntityNodeParams): Promise<any>;
+export declare function getEntityEdge(context: IExecuteFunctions, params: GetEntityEdgeParams): Promise<any>;
 export {};

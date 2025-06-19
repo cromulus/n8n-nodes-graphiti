@@ -1,5 +1,5 @@
 import { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription, NodeApiError, NodeConnectionType } from 'n8n-workflow';
-import { addEpisode, searchEpisodes, addMessages, getMemory, getEpisodes } from './GenericFunctions';
+import { addEpisode, searchEpisodes, addMessages, getMemory, getEpisodes, addEntityNode, getEntityEdge } from './GenericFunctions';
 
 export class Graphiti implements INodeType {
     description: INodeTypeDescription = {
@@ -12,8 +12,8 @@ export class Graphiti implements INodeType {
         defaults: {
             name: 'Graphiti',
         },
-        inputs: ['main'],
-        outputs: ['main'],
+        inputs: [NodeConnectionType.Main],
+        outputs: [NodeConnectionType.Main],
         credentials: [
             {
                 name: 'graphitiApi',
@@ -28,6 +28,12 @@ export class Graphiti implements INodeType {
                 noDataExpression: true,
                 options: [
                     {
+                        name: 'Add Entity Node',
+                        value: 'addEntityNode',
+                        description: 'Add an individual entity node to the knowledge graph',
+                        action: 'Add entity node to graphiti',
+                    },
+                    {
                         name: 'Add Episode',
                         value: 'addEpisode',
                         description: 'Creates a new "episode" in your Graphiti knowledge graph. An episode represents a unit of knowledge, like a document, a conversation, or a structured record.',
@@ -38,6 +44,12 @@ export class Graphiti implements INodeType {
                         value: 'addMessages',
                         description: 'Add conversation messages to a specific group in the knowledge graph',
                         action: 'Add messages to graphiti',
+                    },
+                    {
+                        name: 'Get Entity Edge',
+                        value: 'getEntityEdge',
+                        description: 'Retrieve details of a specific entity edge by UUID',
+                        action: 'Get entity edge from graphiti',
                     },
                     {
                         name: 'Get Episodes',
@@ -426,6 +438,72 @@ export class Graphiti implements INodeType {
                     },
                 ],
             },
+            // Add Entity Node Fields
+            {
+                displayName: 'UUID',
+                name: 'uuid',
+                type: 'string',
+                default: '',
+                description: 'The UUID of the entity node to add',
+                required: true,
+                displayOptions: {
+                    show: {
+                        operation: ['addEntityNode'],
+                    },
+                },
+            },
+            {
+                displayName: 'Group ID',
+                name: 'groupId',
+                type: 'string',
+                default: '',
+                description: 'The group ID for the entity node',
+                required: true,
+                displayOptions: {
+                    show: {
+                        operation: ['addEntityNode'],
+                    },
+                },
+            },
+            {
+                displayName: 'Name',
+                name: 'name',
+                type: 'string',
+                default: '',
+                description: 'The name of the entity node',
+                required: true,
+                displayOptions: {
+                    show: {
+                        operation: ['addEntityNode'],
+                    },
+                },
+            },
+            {
+                displayName: 'Summary',
+                name: 'summary',
+                type: 'string',
+                default: '',
+                description: 'Optional summary of the entity node',
+                displayOptions: {
+                    show: {
+                        operation: ['addEntityNode'],
+                    },
+                },
+            },
+            // Get Entity Edge Fields
+            {
+                displayName: 'UUID',
+                name: 'uuid',
+                type: 'string',
+                default: '',
+                description: 'The UUID of the entity edge to retrieve',
+                required: true,
+                displayOptions: {
+                    show: {
+                        operation: ['getEntityEdge'],
+                    },
+                },
+            },
         ],
     };
 
@@ -481,6 +559,21 @@ export class Graphiti implements INodeType {
                         last_n: this.getNodeParameter('lastN', i) as number,
                     };
                     const response = await getEpisodes(this, params);
+                    returnData.push({ json: response });
+                } else if (operation === 'addEntityNode') {
+                    const params = {
+                        uuid: this.getNodeParameter('uuid', i) as string,
+                        group_id: this.getNodeParameter('groupId', i) as string,
+                        name: this.getNodeParameter('name', i) as string,
+                        summary: this.getNodeParameter('summary', i, '') as string,
+                    };
+                    const response = await addEntityNode(this, params);
+                    returnData.push({ json: response });
+                } else if (operation === 'getEntityEdge') {
+                    const params = {
+                        uuid: this.getNodeParameter('uuid', i) as string,
+                    };
+                    const response = await getEntityEdge(this, params);
                     returnData.push({ json: response });
                 }
             } catch (error) {
