@@ -38,8 +38,9 @@
     "credentials": [
       "dist/credentials/GraphitiApi.credentials.js"
     ],
-    "nodes": [
-      "dist/nodes/GraphitiApi/Graphiti.node.js"
+        "nodes": [
+        "dist/nodes/GraphitiApi/Graphiti.node.js",
+        "dist/nodes/GraphitiApi/GraphitiMemory.node.js"
     ]
   },
   "devDependencies": {
