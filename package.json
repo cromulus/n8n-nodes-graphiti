@@ -39,7 +39,6 @@
       "dist/credentials/GraphitiApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/GraphitiApi/GenericFunction.node.js",
       "dist/nodes/GraphitiApi/Graphiti.node.js"
     ]
   },
