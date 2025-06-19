@@ -1,11 +1,10 @@
-import { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription, NodeApiError } from 'n8n-workflow';
+import { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription, NodeApiError, NodeConnectionType } from 'n8n-workflow';
 import { addEpisode, searchEpisodes } from './GenericFunctions';
 
 export class Graphiti implements INodeType {
     description: INodeTypeDescription = {
         displayName: 'Graphiti',
         name: 'graphiti',
-        icon: 'file:node-icon.svg',
         group: ['transform'],
         version: 1,
         subtitle: '={{$parameter["operation"] + ": " + $parameter["name"]}}',
@@ -13,15 +12,14 @@ export class Graphiti implements INodeType {
         defaults: {
             name: 'Graphiti',
         },
-        inputs: ['main'],
-        outputs: ['main'],
+        inputs: [NodeConnectionType.Main],
+        outputs: [NodeConnectionType.Main],
         credentials: [
             {
                 name: 'graphitiApi',
                 required: true,
             },
         ],
-        usableAsTool: true,
         properties: [
             {
                 displayName: 'Operation',
