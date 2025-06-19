@@ -8,11 +8,11 @@ export class GraphitiApi implements ICredentialType {
     name = 'graphitiApi';
     displayName = 'Graphiti API';
     documentationUrl = 'https://your-fastapi-docs-url'; // Replace with your FastAPI docs URL if available
-    properties = [
+    properties: INodeProperties[] = [
         {
             displayName: 'API Base URL',
             name: 'baseUrl',
-            type: 'string' as NodePropertyTypes,
+            type: 'string',
             default: 'http://localhost:8000',
             description: 'The base URL of the Graphiti FastAPI server',
             required: true,

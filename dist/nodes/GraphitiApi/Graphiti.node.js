@@ -37,6 +37,24 @@ class Graphiti {
                             action: 'Add a new episode to Graphiti',
                         },
                         {
+                            name: 'Add Messages',
+                            value: 'addMessages',
+                            description: 'Add conversation messages to a specific group in the knowledge graph',
+                            action: 'Add messages to Graphiti',
+                        },
+                        {
+                            name: 'Get Episodes',
+                            value: 'getEpisodes',
+                            description: 'Retrieve episodes for a specific group from the knowledge graph',
+                            action: 'Get episodes from Graphiti',
+                        },
+                        {
+                            name: 'Get Memory',
+                            value: 'getMemory',
+                            description: 'Retrieve relevant memories based on context and messages from the knowledge graph',
+                            action: 'Get memory from Graphiti',
+                        },
+                        {
                             name: 'Search Episodes',
                             value: 'searchEpisodes',
                             description: 'Performs a semantic search over the episodes in your Graphiti knowledge graph. You can search for relationships (edges) or concepts (nodes).',
@@ -169,6 +187,240 @@ class Graphiti {
                         },
                     },
                 },
+                {
+                    displayName: 'Group ID',
+                    name: 'groupId',
+                    type: 'string',
+                    default: '',
+                    description: 'The group ID to add messages to',
+                    required: true,
+                    displayOptions: {
+                        show: {
+                            operation: ['addMessages'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'Messages',
+                    name: 'messages',
+                    type: 'fixedCollection',
+                    default: {},
+                    description: 'Messages to add to the group',
+                    typeOptions: {
+                        multipleValues: true,
+                    },
+                    displayOptions: {
+                        show: {
+                            operation: ['addMessages'],
+                        },
+                    },
+                    options: [
+                        {
+                            name: 'message',
+                            displayName: 'Message',
+                            values: [
+                                {
+                                    displayName: 'Content',
+                                    name: 'content',
+                                    type: 'string',
+                                    default: '',
+                                    description: 'The content of the message',
+                                    required: true,
+                                },
+                                {
+                                    displayName: 'Role Type',
+                                    name: 'role_type',
+                                    type: 'options',
+                                    options: [
+                                        { name: 'User', value: 'user' },
+                                        { name: 'Assistant', value: 'assistant' },
+                                        { name: 'System', value: 'system' },
+                                    ],
+                                    default: 'user',
+                                    description: 'The role type of the message',
+                                    required: true,
+                                },
+                                {
+                                    displayName: 'Role',
+                                    name: 'role',
+                                    type: 'string',
+                                    default: '',
+                                    description: 'The custom role of the message (user name, bot name, etc.)',
+                                },
+                                {
+                                    displayName: 'UUID',
+                                    name: 'uuid',
+                                    type: 'string',
+                                    default: '',
+                                    description: 'Optional UUID for the message',
+                                },
+                                {
+                                    displayName: 'Name',
+                                    name: 'name',
+                                    type: 'string',
+                                    default: '',
+                                    description: 'Optional name for the episodic node',
+                                },
+                                {
+                                    displayName: 'Timestamp',
+                                    name: 'timestamp',
+                                    type: 'dateTime',
+                                    default: '',
+                                    description: 'Optional timestamp for the message',
+                                },
+                                {
+                                    displayName: 'Source Description',
+                                    name: 'source_description',
+                                    type: 'string',
+                                    default: '',
+                                    description: 'Optional description of the message source',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    displayName: 'Group ID',
+                    name: 'groupId',
+                    type: 'string',
+                    default: '',
+                    description: 'The group ID to retrieve episodes from',
+                    required: true,
+                    displayOptions: {
+                        show: {
+                            operation: ['getEpisodes'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'Last N',
+                    name: 'lastN',
+                    type: 'number',
+                    default: 10,
+                    description: 'Number of recent episodes to retrieve',
+                    required: true,
+                    displayOptions: {
+                        show: {
+                            operation: ['getEpisodes'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'Group ID',
+                    name: 'groupId',
+                    type: 'string',
+                    default: '',
+                    description: 'The group ID to retrieve memory from',
+                    required: true,
+                    displayOptions: {
+                        show: {
+                            operation: ['getMemory'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'Max Facts',
+                    name: 'maxFacts',
+                    type: 'number',
+                    default: 10,
+                    description: 'Maximum number of facts to retrieve',
+                    displayOptions: {
+                        show: {
+                            operation: ['getMemory'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'Center Node UUID',
+                    name: 'centerNodeUuid',
+                    type: 'string',
+                    default: '',
+                    description: 'Optional UUID of the node to center the retrieval on',
+                    displayOptions: {
+                        show: {
+                            operation: ['getMemory'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'Messages',
+                    name: 'messages',
+                    type: 'fixedCollection',
+                    default: {},
+                    description: 'Messages to build the retrieval query from',
+                    typeOptions: {
+                        multipleValues: true,
+                    },
+                    displayOptions: {
+                        show: {
+                            operation: ['getMemory'],
+                        },
+                    },
+                    options: [
+                        {
+                            name: 'message',
+                            displayName: 'Message',
+                            values: [
+                                {
+                                    displayName: 'Content',
+                                    name: 'content',
+                                    type: 'string',
+                                    default: '',
+                                    description: 'The content of the message',
+                                    required: true,
+                                },
+                                {
+                                    displayName: 'Role Type',
+                                    name: 'role_type',
+                                    type: 'options',
+                                    options: [
+                                        { name: 'User', value: 'user' },
+                                        { name: 'Assistant', value: 'assistant' },
+                                        { name: 'System', value: 'system' },
+                                    ],
+                                    default: 'user',
+                                    description: 'The role type of the message',
+                                    required: true,
+                                },
+                                {
+                                    displayName: 'Role',
+                                    name: 'role',
+                                    type: 'string',
+                                    default: '',
+                                    description: 'The custom role of the message (user name, bot name, etc.)',
+                                },
+                                {
+                                    displayName: 'UUID',
+                                    name: 'uuid',
+                                    type: 'string',
+                                    default: '',
+                                    description: 'Optional UUID for the message',
+                                },
+                                {
+                                    displayName: 'Name',
+                                    name: 'name',
+                                    type: 'string',
+                                    default: '',
+                                    description: 'Optional name for the episodic node',
+                                },
+                                {
+                                    displayName: 'Timestamp',
+                                    name: 'timestamp',
+                                    type: 'dateTime',
+                                    default: '',
+                                    description: 'Optional timestamp for the message',
+                                },
+                                {
+                                    displayName: 'Source Description',
+                                    name: 'source_description',
+                                    type: 'string',
+                                    default: '',
+                                    description: 'Optional description of the message source',
+                                },
+                            ],
+                        },
+                    ],
+                },
             ],
         };
     }
@@ -197,6 +449,36 @@ class Graphiti {
                         limit: this.getNodeParameter('limit', i, 5),
                     };
                     const response = await (0, GenericFunctions_1.searchEpisodes)(this, params);
+                    returnData.push({ json: response });
+                }
+                else if (operation === 'addMessages') {
+                    const messagesCollection = this.getNodeParameter('messages', i, { message: [] });
+                    const messages = messagesCollection.message || [];
+                    const params = {
+                        group_id: this.getNodeParameter('groupId', i),
+                        messages: messages,
+                    };
+                    const response = await (0, GenericFunctions_1.addMessages)(this, params);
+                    returnData.push({ json: response });
+                }
+                else if (operation === 'getMemory') {
+                    const messagesCollection = this.getNodeParameter('messages', i, { message: [] });
+                    const messages = messagesCollection.message || [];
+                    const params = {
+                        group_id: this.getNodeParameter('groupId', i),
+                        max_facts: this.getNodeParameter('maxFacts', i, 10),
+                        center_node_uuid: this.getNodeParameter('centerNodeUuid', i, ''),
+                        messages: messages,
+                    };
+                    const response = await (0, GenericFunctions_1.getMemory)(this, params);
+                    returnData.push({ json: response });
+                }
+                else if (operation === 'getEpisodes') {
+                    const params = {
+                        group_id: this.getNodeParameter('groupId', i),
+                        last_n: this.getNodeParameter('lastN', i),
+                    };
+                    const response = await (0, GenericFunctions_1.getEpisodes)(this, params);
                     returnData.push({ json: response });
                 }
             }

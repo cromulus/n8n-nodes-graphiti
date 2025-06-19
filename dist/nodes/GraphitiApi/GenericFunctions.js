@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addEpisode = addEpisode;
 exports.searchEpisodes = searchEpisodes;
+exports.addMessages = addMessages;
+exports.getMemory = getMemory;
+exports.getEpisodes = getEpisodes;
 async function addEpisode(context, params) {
     const credentials = await context.getCredentials('graphitiApi');
     return context.helpers.httpRequest({
@@ -28,6 +31,40 @@ async function searchEpisodes(context, params) {
             center_node_uuid: params.centerNodeUuid || undefined,
             limit: params.searchType === 'node' ? params.limit : undefined,
         },
+        json: true,
+    });
+}
+async function addMessages(context, params) {
+    const credentials = await context.getCredentials('graphitiApi');
+    return context.helpers.httpRequest({
+        method: 'POST',
+        url: `${credentials.baseUrl}/messages`,
+        body: {
+            group_id: params.group_id,
+            messages: params.messages,
+        },
+        json: true,
+    });
+}
+async function getMemory(context, params) {
+    const credentials = await context.getCredentials('graphitiApi');
+    return context.helpers.httpRequest({
+        method: 'POST',
+        url: `${credentials.baseUrl}/get-memory`,
+        body: {
+            group_id: params.group_id,
+            max_facts: params.max_facts || 10,
+            center_node_uuid: params.center_node_uuid || null,
+            messages: params.messages,
+        },
+        json: true,
+    });
+}
+async function getEpisodes(context, params) {
+    const credentials = await context.getCredentials('graphitiApi');
+    return context.helpers.httpRequest({
+        method: 'GET',
+        url: `${credentials.baseUrl}/episodes/${params.group_id}?last_n=${params.last_n}`,
         json: true,
     });
 }
