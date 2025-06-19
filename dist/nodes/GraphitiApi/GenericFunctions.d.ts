@@ -44,6 +44,15 @@ interface AddEntityNodeParams {
 interface GetEntityEdgeParams {
     uuid: string;
 }
+interface DeleteEntityEdgeParams {
+    uuid: string;
+}
+interface DeleteGroupParams {
+    group_id: string;
+}
+interface DeleteEpisodeParams {
+    uuid: string;
+}
 export declare function addEpisode(context: IExecuteFunctions, params: AddEpisodeParams): Promise<any>;
 export declare function searchEpisodes(context: IExecuteFunctions, params: SearchEpisodesParams): Promise<any>;
 export declare function addMessages(context: IExecuteFunctions, params: AddMessagesParams): Promise<any>;
@@ -51,4 +60,9 @@ export declare function getMemory(context: IExecuteFunctions, params: GetMemoryP
 export declare function getEpisodes(context: IExecuteFunctions, params: GetEpisodesParams): Promise<any>;
 export declare function addEntityNode(context: IExecuteFunctions, params: AddEntityNodeParams): Promise<any>;
 export declare function getEntityEdge(context: IExecuteFunctions, params: GetEntityEdgeParams): Promise<any>;
+export declare function deleteEntityEdge(context: IExecuteFunctions, params: DeleteEntityEdgeParams): Promise<any>;
+export declare function deleteGroup(context: IExecuteFunctions, params: DeleteGroupParams): Promise<any>;
+export declare function deleteEpisode(context: IExecuteFunctions, params: DeleteEpisodeParams): Promise<any>;
+export declare function clearData(context: IExecuteFunctions): Promise<any>;
+export declare function healthCheck(context: IExecuteFunctions): Promise<any>;
 export {};

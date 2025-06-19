@@ -7,6 +7,11 @@ exports.getMemory = getMemory;
 exports.getEpisodes = getEpisodes;
 exports.addEntityNode = addEntityNode;
 exports.getEntityEdge = getEntityEdge;
+exports.deleteEntityEdge = deleteEntityEdge;
+exports.deleteGroup = deleteGroup;
+exports.deleteEpisode = deleteEpisode;
+exports.clearData = clearData;
+exports.healthCheck = healthCheck;
 async function addEpisode(context, params) {
     const credentials = await context.getCredentials('graphitiApi');
     return context.helpers.httpRequest({
@@ -89,6 +94,46 @@ async function getEntityEdge(context, params) {
     return context.helpers.httpRequest({
         method: 'GET',
         url: `${credentials.baseUrl}/entity-edge/${params.uuid}`,
+        json: true,
+    });
+}
+async function deleteEntityEdge(context, params) {
+    const credentials = await context.getCredentials('graphitiApi');
+    return context.helpers.httpRequest({
+        method: 'DELETE',
+        url: `${credentials.baseUrl}/entity-edge/${params.uuid}`,
+        json: true,
+    });
+}
+async function deleteGroup(context, params) {
+    const credentials = await context.getCredentials('graphitiApi');
+    return context.helpers.httpRequest({
+        method: 'DELETE',
+        url: `${credentials.baseUrl}/group/${params.group_id}`,
+        json: true,
+    });
+}
+async function deleteEpisode(context, params) {
+    const credentials = await context.getCredentials('graphitiApi');
+    return context.helpers.httpRequest({
+        method: 'DELETE',
+        url: `${credentials.baseUrl}/episode/${params.uuid}`,
+        json: true,
+    });
+}
+async function clearData(context) {
+    const credentials = await context.getCredentials('graphitiApi');
+    return context.helpers.httpRequest({
+        method: 'POST',
+        url: `${credentials.baseUrl}/clear`,
+        json: true,
+    });
+}
+async function healthCheck(context) {
+    const credentials = await context.getCredentials('graphitiApi');
+    return context.helpers.httpRequest({
+        method: 'GET',
+        url: `${credentials.baseUrl}/healthcheck`,
         json: true,
     });
 }

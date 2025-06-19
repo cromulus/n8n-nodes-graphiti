@@ -53,6 +53,18 @@ interface GetEntityEdgeParams {
     uuid: string;
 }
 
+interface DeleteEntityEdgeParams {
+    uuid: string;
+}
+
+interface DeleteGroupParams {
+    group_id: string;
+}
+
+interface DeleteEpisodeParams {
+    uuid: string;
+}
+
 export async function addEpisode(context: IExecuteFunctions, params: AddEpisodeParams): Promise<any> {
     const credentials = await context.getCredentials('graphitiApi') as { baseUrl: string };
     return context.helpers.httpRequest({
@@ -141,6 +153,51 @@ export async function getEntityEdge(context: IExecuteFunctions, params: GetEntit
     return context.helpers.httpRequest({
         method: 'GET',
         url: `${credentials.baseUrl}/entity-edge/${params.uuid}`,
+        json: true,
+    });
+}
+
+export async function deleteEntityEdge(context: IExecuteFunctions, params: DeleteEntityEdgeParams): Promise<any> {
+    const credentials = await context.getCredentials('graphitiApi') as { baseUrl: string };
+    return context.helpers.httpRequest({
+        method: 'DELETE',
+        url: `${credentials.baseUrl}/entity-edge/${params.uuid}`,
+        json: true,
+    });
+}
+
+export async function deleteGroup(context: IExecuteFunctions, params: DeleteGroupParams): Promise<any> {
+    const credentials = await context.getCredentials('graphitiApi') as { baseUrl: string };
+    return context.helpers.httpRequest({
+        method: 'DELETE',
+        url: `${credentials.baseUrl}/group/${params.group_id}`,
+        json: true,
+    });
+}
+
+export async function deleteEpisode(context: IExecuteFunctions, params: DeleteEpisodeParams): Promise<any> {
+    const credentials = await context.getCredentials('graphitiApi') as { baseUrl: string };
+    return context.helpers.httpRequest({
+        method: 'DELETE',
+        url: `${credentials.baseUrl}/episode/${params.uuid}`,
+        json: true,
+    });
+}
+
+export async function clearData(context: IExecuteFunctions): Promise<any> {
+    const credentials = await context.getCredentials('graphitiApi') as { baseUrl: string };
+    return context.helpers.httpRequest({
+        method: 'POST',
+        url: `${credentials.baseUrl}/clear`,
+        json: true,
+    });
+}
+
+export async function healthCheck(context: IExecuteFunctions): Promise<any> {
+    const credentials = await context.getCredentials('graphitiApi') as { baseUrl: string };
+    return context.helpers.httpRequest({
+        method: 'GET',
+        url: `${credentials.baseUrl}/healthcheck`,
         json: true,
     });
 }

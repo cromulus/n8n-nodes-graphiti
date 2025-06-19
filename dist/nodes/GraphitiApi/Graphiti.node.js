@@ -49,6 +49,30 @@ class Graphiti {
                             action: 'Add messages to graphiti',
                         },
                         {
+                            name: 'Clear Data',
+                            value: 'clearData',
+                            description: 'Clear all data from Graphiti (WARNING: This will delete everything!)',
+                            action: 'Clear all data from graphiti',
+                        },
+                        {
+                            name: 'Delete Entity Edge',
+                            value: 'deleteEntityEdge',
+                            description: 'Delete a specific entity edge by UUID',
+                            action: 'Delete entity edge from graphiti',
+                        },
+                        {
+                            name: 'Delete Episode',
+                            value: 'deleteEpisode',
+                            description: 'Delete a specific episode by UUID',
+                            action: 'Delete episode from graphiti',
+                        },
+                        {
+                            name: 'Delete Group',
+                            value: 'deleteGroup',
+                            description: 'Delete an entire group and all its data',
+                            action: 'Delete group from graphiti',
+                        },
+                        {
                             name: 'Get Entity Edge',
                             value: 'getEntityEdge',
                             description: 'Retrieve details of a specific entity edge by UUID',
@@ -65,6 +89,12 @@ class Graphiti {
                             value: 'getMemory',
                             description: 'Retrieve relevant memories based on context and messages from the knowledge graph',
                             action: 'Get memory from graphiti',
+                        },
+                        {
+                            name: 'Health Check',
+                            value: 'healthCheck',
+                            description: 'Check if the Graphiti API is healthy and responsive',
+                            action: 'Check graphiti health',
                         },
                         {
                             name: 'Search Episodes',
@@ -500,6 +530,45 @@ class Graphiti {
                         },
                     },
                 },
+                {
+                    displayName: 'UUID',
+                    name: 'uuid',
+                    type: 'string',
+                    default: '',
+                    description: 'The UUID of the entity edge to delete',
+                    required: true,
+                    displayOptions: {
+                        show: {
+                            operation: ['deleteEntityEdge'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'UUID',
+                    name: 'uuid',
+                    type: 'string',
+                    default: '',
+                    description: 'The UUID of the episode to delete',
+                    required: true,
+                    displayOptions: {
+                        show: {
+                            operation: ['deleteEpisode'],
+                        },
+                    },
+                },
+                {
+                    displayName: 'Group ID',
+                    name: 'groupId',
+                    type: 'string',
+                    default: '',
+                    description: 'The group ID to delete (WARNING: This will delete all data in the group)',
+                    required: true,
+                    displayOptions: {
+                        show: {
+                            operation: ['deleteGroup'],
+                        },
+                    },
+                },
             ],
         };
     }
@@ -575,6 +644,35 @@ class Graphiti {
                         uuid: this.getNodeParameter('uuid', i),
                     };
                     const response = await (0, GenericFunctions_1.getEntityEdge)(this, params);
+                    returnData.push({ json: response });
+                }
+                else if (operation === 'deleteEntityEdge') {
+                    const params = {
+                        uuid: this.getNodeParameter('uuid', i),
+                    };
+                    const response = await (0, GenericFunctions_1.deleteEntityEdge)(this, params);
+                    returnData.push({ json: response });
+                }
+                else if (operation === 'deleteEpisode') {
+                    const params = {
+                        uuid: this.getNodeParameter('uuid', i),
+                    };
+                    const response = await (0, GenericFunctions_1.deleteEpisode)(this, params);
+                    returnData.push({ json: response });
+                }
+                else if (operation === 'deleteGroup') {
+                    const params = {
+                        group_id: this.getNodeParameter('groupId', i),
+                    };
+                    const response = await (0, GenericFunctions_1.deleteGroup)(this, params);
+                    returnData.push({ json: response });
+                }
+                else if (operation === 'clearData') {
+                    const response = await (0, GenericFunctions_1.clearData)(this);
+                    returnData.push({ json: response });
+                }
+                else if (operation === 'healthCheck') {
+                    const response = await (0, GenericFunctions_1.healthCheck)(this);
                     returnData.push({ json: response });
                 }
             }

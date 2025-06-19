@@ -1,5 +1,5 @@
 import { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription, NodeApiError, NodeConnectionType } from 'n8n-workflow';
-import { addEpisode, searchEpisodes, addMessages, getMemory, getEpisodes, addEntityNode, getEntityEdge } from './GenericFunctions';
+import { addEpisode, searchEpisodes, addMessages, getMemory, getEpisodes, addEntityNode, getEntityEdge, deleteEntityEdge, deleteGroup, deleteEpisode, clearData, healthCheck } from './GenericFunctions';
 
 export class Graphiti implements INodeType {
     description: INodeTypeDescription = {
@@ -46,6 +46,30 @@ export class Graphiti implements INodeType {
                         action: 'Add messages to graphiti',
                     },
                     {
+                        name: 'Clear Data',
+                        value: 'clearData',
+                        description: 'Clear all data from Graphiti (WARNING: This will delete everything!)',
+                        action: 'Clear all data from graphiti',
+                    },
+                    {
+                        name: 'Delete Entity Edge',
+                        value: 'deleteEntityEdge',
+                        description: 'Delete a specific entity edge by UUID',
+                        action: 'Delete entity edge from graphiti',
+                    },
+                    {
+                        name: 'Delete Episode',
+                        value: 'deleteEpisode',
+                        description: 'Delete a specific episode by UUID',
+                        action: 'Delete episode from graphiti',
+                    },
+                    {
+                        name: 'Delete Group',
+                        value: 'deleteGroup',
+                        description: 'Delete an entire group and all its data',
+                        action: 'Delete group from graphiti',
+                    },
+                    {
                         name: 'Get Entity Edge',
                         value: 'getEntityEdge',
                         description: 'Retrieve details of a specific entity edge by UUID',
@@ -62,6 +86,12 @@ export class Graphiti implements INodeType {
                         value: 'getMemory',
                         description: 'Retrieve relevant memories based on context and messages from the knowledge graph',
                         action: 'Get memory from graphiti',
+                    },
+                    {
+                        name: 'Health Check',
+                        value: 'healthCheck',
+                        description: 'Check if the Graphiti API is healthy and responsive',
+                        action: 'Check graphiti health',
                     },
                     {
                         name: 'Search Episodes',
@@ -504,6 +534,48 @@ export class Graphiti implements INodeType {
                     },
                 },
             },
+            // Delete Entity Edge Fields
+            {
+                displayName: 'UUID',
+                name: 'uuid',
+                type: 'string',
+                default: '',
+                description: 'The UUID of the entity edge to delete',
+                required: true,
+                displayOptions: {
+                    show: {
+                        operation: ['deleteEntityEdge'],
+                    },
+                },
+            },
+            // Delete Episode Fields
+            {
+                displayName: 'UUID',
+                name: 'uuid',
+                type: 'string',
+                default: '',
+                description: 'The UUID of the episode to delete',
+                required: true,
+                displayOptions: {
+                    show: {
+                        operation: ['deleteEpisode'],
+                    },
+                },
+            },
+            // Delete Group Fields
+            {
+                displayName: 'Group ID',
+                name: 'groupId',
+                type: 'string',
+                default: '',
+                description: 'The group ID to delete (WARNING: This will delete all data in the group)',
+                required: true,
+                displayOptions: {
+                    show: {
+                        operation: ['deleteGroup'],
+                    },
+                },
+            },
         ],
     };
 
@@ -574,6 +646,30 @@ export class Graphiti implements INodeType {
                         uuid: this.getNodeParameter('uuid', i) as string,
                     };
                     const response = await getEntityEdge(this, params);
+                    returnData.push({ json: response });
+                } else if (operation === 'deleteEntityEdge') {
+                    const params = {
+                        uuid: this.getNodeParameter('uuid', i) as string,
+                    };
+                    const response = await deleteEntityEdge(this, params);
+                    returnData.push({ json: response });
+                } else if (operation === 'deleteEpisode') {
+                    const params = {
+                        uuid: this.getNodeParameter('uuid', i) as string,
+                    };
+                    const response = await deleteEpisode(this, params);
+                    returnData.push({ json: response });
+                } else if (operation === 'deleteGroup') {
+                    const params = {
+                        group_id: this.getNodeParameter('groupId', i) as string,
+                    };
+                    const response = await deleteGroup(this, params);
+                    returnData.push({ json: response });
+                } else if (operation === 'clearData') {
+                    const response = await clearData(this);
+                    returnData.push({ json: response });
+                } else if (operation === 'healthCheck') {
+                    const response = await healthCheck(this);
                     returnData.push({ json: response });
                 }
             } catch (error) {
