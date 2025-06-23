@@ -5,3 +5,6 @@ tmp
 npm-debug.log*
 yarn.lock
 .vscode/launch.json
+
+# Build output (handled by GitHub Actions)
+dist/
