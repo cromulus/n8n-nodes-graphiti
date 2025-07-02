@@ -22,6 +22,9 @@ importers:
       n8n-workflow:
         specifier: '*'
         version: 1.82.0
+      zod:
+        specifier: ^3.22.0
+        version: 3.24.1
     devDependencies:
       '@typescript-eslint/parser':
         specifier: ^7.15.0

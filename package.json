@@ -40,8 +40,13 @@
     ],
         "nodes": [
         "dist/nodes/GraphitiApi/Graphiti.node.js",
-        "dist/nodes/GraphitiApi/GraphitiMemory.node.js"
+        "dist/nodes/GraphitiApi/GraphitiMemory.node.js",
+        "dist/nodes/GraphitiApi/GraphitiMemoryTool.node.js",
+        "dist/nodes/GraphitiApi/GraphitiKnowledgeTool.node.js"
     ]
+  },
+  "dependencies": {
+    "zod": "^3.22.0"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "^7.15.0",

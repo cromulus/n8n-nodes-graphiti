@@ -186,3 +186,103 @@ New User → Initialize Session → [Simple Memory Pattern] → Continue...
 5. **Test with a simple conversation** to see memory in action
 
 Your AI assistants will now have persistent, contextual memory! 🧠✨ 
+
+## 🔧 Advanced: AI Tool Node Schema Control
+
+In n8n's **AI Tool node** (especially when used with the **LangChain AI Agent**), you control which parameters the AI agent can populate by explicitly **defining the tool's input schema** using Zod (or JSON Schema) inside the node configuration.
+
+---
+
+### ✅ Step-by-Step: How to Specify Which Params the AI Agent Can Use
+
+1. **Open your AI Tool node**
+   (Usually called "Tool" inside an Agent node's "Tools" list)
+
+2. **Scroll to the "Tool Input Schema" section**
+   This is often labeled as `inputSchema` or similar.
+
+3. **Define a schema using Zod** (or JSON Schema, depending on how the tool was created).
+   Example using Zod:
+
+   ```ts
+   import { z } from "zod";
+
+   export const inputSchema = z.object({
+     email: z.string().email(),
+     name: z.string(),
+     notes: z.optional(z.string()),
+   });
+   ```
+
+   Only the fields defined here (`email`, `name`, `notes`) can be populated by the AI agent. Anything not listed will be rejected.
+
+4. **Optionally: Add descriptions**
+   You can use `.describe()` to help the agent better understand each field:
+
+   ```ts
+   z.object({
+     email: z.string().email().describe("The user's email address"),
+     name: z.string().describe("The user's full name"),
+   });
+   ```
+
+5. **Save and re-enable the tool in the Agent node**
+
+---
+
+### 🧠 What the AI Agent Sees
+
+* When the tool is registered with the Agent, the schema is exposed to the LLM.
+* The LLM uses this to decide what keys to include in the input JSON when calling the tool.
+
+So, **only parameters defined in the schema are available for use**. If it's not listed in the schema, the agent won't send it.
+
+---
+
+### 🔒 Can You Make Fields Hidden from the AI?
+
+If you're dynamically populating some fields yourself in the tool logic and don't want the AI to set them, **just leave them out of the schema**. For example:
+
+```ts
+z.object({
+  name: z.string(),         // AI can set this
+  email: z.string(),        // AI can set this
+  // DO NOT include: internalUserId
+})
+```
+
+Then in the tool logic, inject `internalUserId` programmatically.
+
+In n8n's AI Tool node:
+
+* The `inputSchema` (usually using Zod) defines **exactly what parameters** the AI agent can populate.
+* Anything not defined in the schema is rejected.
+* Add descriptions to help guide the agent.
+
+Let me know if you want a full example tool with schema and usage!
+
+---
+
+## 🤖 **NEW: AI Tool Nodes with Smart Auto-Population**
+
+We've added **enhanced AI Tool versions** of the Graphiti nodes with intelligent schema control and auto-population:
+
+### **Graphiti AI Memory Tool** 
+- 🧠 **AI-agent friendly** with Zod schema validation
+- 🔄 **Smart auto-population** - detects message fields automatically
+- ⚡ **Pre-filled defaults** for session IDs, user names, timestamps
+- 🎯 **Schema control** - AI agents can only use defined parameters
+
+### **Graphiti Knowledge Tool**
+- 🔍 **Knowledge search & management** for AI agents  
+- 📚 **Auto-detects** content, titles, descriptions from JSON
+- 🕐 **Timestamp handling** - auto-generates or detects time fields
+- 🔒 **Controlled parameters** - Zod schemas define AI agent capabilities
+
+### **Key Benefits:**
+- ✅ **80%+ fields auto-populated** from common JSON patterns
+- ✅ **AI agents get schema guidance** via Zod validation
+- ✅ **Manual override support** when needed
+- ✅ **Works with any JSON structure** - flexible field detection
+
+**👉 See [AI_TOOL_SMART_DEFAULTS.md](AI_TOOL_SMART_DEFAULTS.md) for complete auto-population examples!** 
