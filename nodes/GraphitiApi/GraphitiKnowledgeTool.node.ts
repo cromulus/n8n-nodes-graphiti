@@ -64,8 +64,8 @@ export class GraphitiKnowledgeTool implements INodeType {
 		defaults: {
 			name: 'Graphiti Knowledge Tool',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+			inputs: [NodeConnectionType.Main],
+	outputs: [NodeConnectionType.Main],
 		usableAsTool: true,
 		credentials: [
 			{

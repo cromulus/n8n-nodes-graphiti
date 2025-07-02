@@ -12,8 +12,8 @@ export class Graphiti implements INodeType {
         defaults: {
             name: 'Graphiti',
         },
-        inputs: ['main'],
-        outputs: ['main'],
+        inputs: [NodeConnectionType.Main],
+        outputs: [NodeConnectionType.Main],
 				usableAsTool: true,
         credentials: [
             {

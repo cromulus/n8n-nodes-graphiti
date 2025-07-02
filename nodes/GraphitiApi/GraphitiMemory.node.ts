@@ -13,10 +13,9 @@ export class GraphitiMemory implements INodeType {
         defaults: {
             name: 'Graphiti AI Memory',
         },
-        inputs: ['main'],
-        outputs: ['main'],
+        inputs: [NodeConnectionType.Main],
+        outputs: [NodeConnectionType.Main],
         usableAsTool: true,
-        toolDescription: 'Provides persistent memory management for AI conversations using Graphiti knowledge graph. Store, retrieve, and manage conversational context seamlessly with AI nodes.',
         credentials: [
             {
                 name: 'graphitiApi',

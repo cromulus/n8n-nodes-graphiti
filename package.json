@@ -38,14 +38,15 @@
     "credentials": [
       "dist/credentials/GraphitiApi.credentials.js"
     ],
-        "nodes": [
-        "dist/nodes/GraphitiApi/Graphiti.node.js",
-        "dist/nodes/GraphitiApi/GraphitiMemory.node.js",
-        "dist/nodes/GraphitiApi/GraphitiMemoryTool.node.js",
-        "dist/nodes/GraphitiApi/GraphitiKnowledgeTool.node.js"
+    "nodes": [
+      "dist/nodes/GraphitiApi/Graphiti.node.js",
+      "dist/nodes/GraphitiApi/GraphitiMemory.node.js",
+      "dist/nodes/GraphitiApi/GraphitiMemoryTool.node.js",
+      "dist/nodes/GraphitiApi/GraphitiKnowledgeTool.node.js"
     ]
   },
   "dependencies": {
+    "@types/node": "^24.0.10",
     "zod": "^3.22.0"
   },
   "devDependencies": {
