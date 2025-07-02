@@ -64,8 +64,10 @@ export class GraphitiKnowledgeTool implements INodeType {
 		defaults: {
 			name: 'Graphiti Knowledge Tool',
 		},
-		inputs: [NodeConnectionType.Main],
-		outputs: [NodeConnectionType.Main],
+		inputs: ['main'],
+		outputs: ['main'],
+		usableAsTool: true,
+		toolDescription: 'AI Tool for searching and managing knowledge using Graphiti knowledge graph. AI agents can perform semantic searches, add new knowledge episodes, and retrieve contextual memory with schema-controlled parameters.',
 		credentials: [
 			{
 				name: 'graphitiApi',

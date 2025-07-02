@@ -56,8 +56,10 @@ export class GraphitiMemoryTool implements INodeType {
 		defaults: {
 			name: 'Graphiti AI Memory Tool',
 		},
-		inputs: [NodeConnectionType.Main],
-		outputs: [NodeConnectionType.Main],
+		inputs: ['main'],
+		outputs: ['main'],
+		usableAsTool: true,
+		toolDescription: 'AI Tool for managing persistent conversation memory using Graphiti knowledge graph. AI agents can retrieve context, store conversations, and manage entities with schema-controlled parameters.',
 		credentials: [
 			{
 				name: 'graphitiApi',
