@@ -15,7 +15,6 @@ export class Graphiti implements INodeType {
         inputs: ['main'],
         outputs: ['main'],
 				usableAsTool: true,
-				toolDescription: 'A powerful node to interact with the Graphiti API. It allows you to create new knowledge graph "episodes" from text or JSON, and to perform semantic searches (edge or node-based) across your knowledge graph.',
         credentials: [
             {
                 name: 'graphitiApi',
